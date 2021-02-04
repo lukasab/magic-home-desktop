@@ -1,6 +1,9 @@
 import Vue from 'vue'
 
+import VueElectron from 'vue-electron'
+
 import router from '@/router'
+import store from '@/store'
 
 import App from '@/App.vue'
 
@@ -10,10 +13,13 @@ files.keys().map((key) => {
 
   Vue.component(id, files(key).default)
 })
+
+Vue.use(VueElectron)
  
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

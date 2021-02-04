@@ -1,12 +1,17 @@
 <template>
-  <main>
-    <transition :name="transition">
-      <router-view></router-view>
-    </transition>
-  </main>
+  <div class="top-container" v-bind:class="containerClass()">
+    <div class="arrow-top"></div>
+    <main>
+      <transition :name="transition">
+        <router-view></router-view>
+      </transition>
+    </main>
+  </div>
 </template>
 
 <script>
+  import os from 'os'
+
   export default {
     data() {
       return {
@@ -16,6 +21,11 @@
     watch: {
       $route(to) {
         this.transition = (to.name == 'devices') ? 'prev' : 'next';
+      }
+    },
+    methods: {
+      containerClass() {
+        return (os.platform() == 'win32') ? 'window-windows' : 'window-mac'
       }
     }
   }
@@ -52,6 +62,7 @@
     overflow: hidden;
     font-family: 'Axiforma';
     user-select: none;
+    background-color: transparent;
 
     --accent-color: #0076fe;
     --accent-text-color: #fff;
@@ -80,14 +91,62 @@
     box-sizing: border-box;
   }
 
+  .top-container {
+    position: relative;
+    height: 563px;
+    width: 400px;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1002;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    &:before {
+      top: 0;
+      border-bottom: 5px solid var(--secondary-color);
+    }
+
+    &:after {
+      bottom: -5px;
+      border-top: 5px solid var(--primary-color);
+    }
+
+    &.window-mac {
+      padding-top: 5px;
+
+      &:before {
+        display: block;
+      }
+    }
+
+    &.window-windows {
+      box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      margin: 10px;
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+
   main {
-    min-height: 100%;
+    min-height: 563px;
     display: grid;
     grid-template: 'main';
     flex: 1;
     position: relative;
     z-index: 0;
     overflow-x: hidden;
+    background-color: transparent;
 
     & > :first-child {
       z-index: 1001;

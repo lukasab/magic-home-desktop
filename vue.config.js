@@ -7,5 +7,22 @@ module.exports = {
         '@': path.join(__dirname, './src')
       }
     },
+  },
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true,
+      externals: ['tray-window-state-manager'],
+      builderOptions: {
+        extraResources: [
+          {
+            "from": "src/assets",
+            "to": "resources",
+            "filter": [
+              "**/*"
+            ]
+          }
+        ]
+      }
+    }
   }
 }

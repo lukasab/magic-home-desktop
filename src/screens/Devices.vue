@@ -2,7 +2,7 @@
   <magic-container>
     <magic-header></magic-header>
     <magic-page-title title="Devices">
-      <magic-button v-on:click="discoverDevices">
+      <magic-button v-on:click="discoverDevices" :disabled="discovering">
         Discover devices
       </magic-button>
     </magic-page-title>
@@ -55,12 +55,12 @@
       }
     },
     methods: {
-      discoverDevices() {
+      async discoverDevices() {
         this.discovering = true
 
-        setTimeout(() => {
-          this.discovering = false
-        }, 3000)
+        await this.$store.dispatch('discoverDevices')
+
+        this.discovering = false
       },
       changeDeviceName(name) {
         console.log(name)
